@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let errorMessage = [[${errorMessage}]];
+    /*]]>*/
+
+    if(errorMessage != null) {
+        alert(errorMessage);
+    }
+
+    // window.history.back();
+</script>
+
+에러 페이지 입니다.
+</body>
+</html>

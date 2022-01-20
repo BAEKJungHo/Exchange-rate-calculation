@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- header include -->
+<head th:replace="fragments/header :: header" />
+
+<!-- script : s -->
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+
+    // 수취 금액 계산
+    function calculate() {
+        let receivingCountry = $('#receivingCountry option:selected').val();
+
+        $.ajax({
+            type: "POST",
+            url: `/exchangeRate/calculate`,
+            dataType: "json"
+        }).done(function (response) {
+            alert("댓글삭제 완료");
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+
+    // 통화에 해당하는 환율 조회
+    function findExchangeRateByCurrency() {
+        let receivingCountry = $('#receivingCountry option:selected').val();
+        let data = {
+            "receivingCountry" : receivingCountry,
+        }
+
+        $.ajax({
+            type: "POST",
+            url: `/exchangeRates/`+receivingCountry,
+            headers: {'Content-Type': 'application/json'},
+            data: JSON.stringify(data),
+            dataType: "json"
+        }).done(function (response) {
+            document.getElementById("countryExchangeRate").textContent=response;
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
+</script>
+<!-- script : e -->
+
+<body>
+
+<!-- container : s -->
+<div class="container">
+    <div class="header" th:fragment="bodyHeader">
+        <h2 class="text-muted">환율 계산</h2>
+    </div>
+
+    <form role="form" action="/exchangeRates/api/calculate" th:object="${exchangeRateForm}" method="post" id="exchangeRateCalculationForm">
+        <div class="form-group">
+            송금국가 : 미국(USD)
+        </div>
+        <div class="form-group">
+            수취국가 :
+            <select id="receivingCountry" name="receivingCountry" th:onchange="'javascript:findExchangeRateByCurrency()'">
+                <option th:each="country : ${receivingCountries}" th:value="${country.getCurrency().name()}" th:text="|${country.getCountryName()} (${country.getCurrency().name()})|"></option>
+            </select>
+        </div>
+        <div class="form-group" id="exchangeRateDiv">
+            환율 : <span id="countryExchangeRate" th:text="${krwExchangeRate}"></span>
+        </div>
+        <div class="form-group">
+            <label th:for="remittance">송금액</label>
+            <input type="text" class="form-control" placeholder="송금액을 입력하세요">
+        </div>
+<!--        <button type="submit" class="btn btn-primary">Submit</button>-->
+        <a href="#submit" th:onclick="'javascript:calculate()'">Submit</a>
+    </form>
+
+    <br/>
+
+    <div id="receivedAmountDiv"></div>
+
+    <div th:replace="fragments/footer :: footer" />
+</div>
+<!-- container : e -->
+
+</body>
+</html>
