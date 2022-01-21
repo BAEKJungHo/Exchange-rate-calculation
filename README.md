@@ -17,8 +17,11 @@
 
 - GET `/exchangeRates/form`, produces = MediaType.TEXT_HTML_VALUE
     - 환율 계산 및 송금을 위한 폼
-- POST `/exchangeRates/{currency}`
+- GET `/exchangeRates/{currency}` , produces = MediaType.APPLICATION_JSON_VALUE
     - 셀렉트 박스로 통화 선택 시(Ex. KRW) 환율을 조회하기 위함
-- POST `/exchangesRates`
-    - 환율 계산 후 송금
+- POST `/exchangesRates`, produces = MediaType.APPLICATION_JSON_VALUE
+    - 환율 계산
 
+## Error Response Format
+
+![errorresponse](https://user-images.githubusercontent.com/47518272/150482165-caac42d9-f4fc-4343-a550-165cd7bc5b40.png)
