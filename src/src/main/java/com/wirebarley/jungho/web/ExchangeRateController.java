@@ -4,6 +4,7 @@ import com.wirebarley.jungho.domain.Currency;
 import com.wirebarley.jungho.domain.ExchangeRate;
 import com.wirebarley.jungho.domain.ReceivingCountry;
 import com.wirebarley.jungho.service.ExchangeRateFindService;
+import com.wirebarley.jungho.util.NumberFormatter;
 import com.wirebarley.jungho.web.form.ExchangeRateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -28,12 +29,6 @@ public class ExchangeRateController {
 
     private final ExchangeRateFindService exchangeRateFindService;
 
-    /**
-     * 환율 계산 폼
-     * @param model Model
-     * @param request HttpServletRequest
-     * @return 환율 계산 폼
-     */
     @GetMapping(value = "/form", produces = MediaType.TEXT_HTML_VALUE)
     public String form(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -43,7 +38,7 @@ public class ExchangeRateController {
             session.setAttribute(EXCHANGE_RATE, exchangeRate);
         }
 
-        model.addAttribute("krwExchangeRate", exchangeRate.findRates(Currency.KRW.name()));
+        model.addAttribute("krwExchangeRate", NumberFormatter.moneyFormat(exchangeRate.findRates(Currency.KRW.name())));
         model.addAttribute("receivingCountries", List.of(ReceivingCountry.values()));
         model.addAttribute("exchangeRateForm", new ExchangeRateForm());
 

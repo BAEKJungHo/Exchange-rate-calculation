@@ -1,37 +1,40 @@
 package com.wirebarley.jungho.service;
 
-import com.wirebarley.jungho.domain.Currency;
-import com.wirebarley.jungho.domain.ExchangeRate;
+import com.wirebarley.jungho.helper.CurrencyAPI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ExchangeRateFindServiceTest {
 
     @Value("${currencyLayer.endPoint}")
     private String endPoint;
 
-    @Autowired
-    private ExchangeRateFindService exchangeRateFindService;
-
-    @DisplayName("CurrencyLayer API endPoint 테스트")
+    @DisplayName("CurrencyLayer API endPoint 연결 테스트")
     @Test
-    void currencyLayerApiEndpointTest() throws Exception {
+    void currencyLayerApiEndpoint() throws Exception {
         URL url = new URL(endPoint);
         assertNotNull(url);
     }
 
     @DisplayName("KRW 환율 테스트")
     @Test
-    void krwExchangeRateTest() {
-        ExchangeRate exchangeRate = exchangeRateFindService.findExchangeRate();
-        assertEquals(exchangeRate.findRates(Currency.KRW.name()), 1189.835062);
+    void krwExchangeRate() {
+        Map<String, Object> result = CurrencyAPI.call(endPoint);
+        Map<String, Double> quotes = (HashMap) result.get("quotes");
+
+        String source = (String) result.get("source");
+        String currency = "KRW";
+        String quotesKey = source + currency;
+
+        assertEquals(quotes.get(quotesKey), 1189.835062);
     }
 }

@@ -29,4 +29,15 @@ public class ExchangeRate {
         }
         throw new IllegalArgumentException(Message.NOT_FOUND_CURRENCY.getMessage());
     }
+
+    /**
+     * 수취금액 찾기
+     * @param target Currency name
+     * @param remittanceMoney 송금액
+     * @return 수취금액
+     */
+    public Double findReceipts(final String target, final Integer remittanceMoney) {
+        double exchangeRates = findRates(target);
+        return exchangeRates * remittanceMoney;
+    }
 }

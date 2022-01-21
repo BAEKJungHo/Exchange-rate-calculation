@@ -1,3 +1,7 @@
+spring:
+  messages:
+    basename: errors
+
 currencyLayer:
   endPoint: http://api.currencylayer.com/live?access_key=797e0818994adb686a7d571ed998abc4
 #  apiKey: 797e0818994adb686a7d571ed998abc4
