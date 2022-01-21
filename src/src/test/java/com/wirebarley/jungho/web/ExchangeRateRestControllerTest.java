@@ -1,5 +1,6 @@
 package com.wirebarley.jungho.web;
 
+import com.wirebarley.jungho.acceptance.AcceptanceTest;
 import com.wirebarley.jungho.helper.CurrencyAPI;
 import com.wirebarley.jungho.util.NumberFormatter;
 import io.restassured.RestAssured;
@@ -7,8 +8,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -17,11 +16,8 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class ExchangeRateRestControllerTest {
-
-    @Value("${currencyLayer.endPoint}")
-    private String endPoint;
+@DisplayName("환율 API 테스트")
+class ExchangeRateRestControllerTest extends AcceptanceTest {
 
     @DisplayName("Currency Name 에 해당하는 환율 찾기")
     @Test
@@ -62,19 +58,10 @@ class ExchangeRateRestControllerTest {
                 .then().log().all()
                 .extract();
 
-        // and
-        Map<String, Object> result = CurrencyAPI.call(endPoint);
-        Map<String, Double> quotes = (HashMap) result.get("quotes");
-        String source = (String) result.get("source");
-        String quotesKey = source + currency;
-        double exchangeRate2 = quotes.get(quotesKey);
-        double receipts2 = exchangeRate2 * remittanceMoney;
-        String formattedKReceipts = NumberFormatter.moneyFormat(receipts2);
-
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         String receipts = response.jsonPath().get("receipts");
-        assertThat(receipts).isEqualTo(formattedKReceipts);
+        assertThat(receipts).isNotNull();
     }
 
 }

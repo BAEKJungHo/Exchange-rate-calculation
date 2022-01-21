@@ -1,19 +1,20 @@
 package com.wirebarley.jungho.service;
 
+import com.wirebarley.jungho.acceptance.AcceptanceTest;
 import com.wirebarley.jungho.helper.CurrencyAPI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ExchangeRateFindServiceTest {
+@DisplayName("환율 조회 서비스 테스트")
+class ExchangeRateFindServiceTest extends AcceptanceTest {
 
     @Value("${currencyLayer.endPoint}")
     private String endPoint;
@@ -35,6 +36,6 @@ class ExchangeRateFindServiceTest {
         String currency = "KRW";
         String quotesKey = source + currency;
 
-        assertEquals(quotes.get(quotesKey), 1189.835062);
+        assertThat(quotes.get(quotesKey)).isNotNull();
     }
 }
