@@ -5,7 +5,6 @@ import com.wirebarley.jungho.util.NumberFormatter;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,14 +22,6 @@ class ExchangeRateRestControllerTest {
 
     @Value("${currencyLayer.endPoint}")
     private String endPoint;
-
-    private Map<String, Object> apiResult;
-
-    @BeforeEach
-    @Test
-    void setFixtures() {
-        apiResult = CurrencyAPI.call(endPoint);
-    }
 
     @DisplayName("Currency Name 에 해당하는 환율 찾기")
     @Test
