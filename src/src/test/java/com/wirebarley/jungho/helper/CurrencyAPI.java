@@ -2,10 +2,7 @@ package com.wirebarley.jungho.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wirebarley.jungho.domain.ExchangeRate;
-import com.wirebarley.jungho.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.BufferedReader;
@@ -20,10 +17,6 @@ import java.util.Map;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CurrencyAPI {
 
-    /**
-     * 환율 조회
-     * @return 환율(ExchangeRate)
-     */
     public static Map<String, Object> call(String endPoint) {
         Map<String, Object> resultMap;
         try {
