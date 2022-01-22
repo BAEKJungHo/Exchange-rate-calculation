@@ -1,7 +1,7 @@
 package com.wirebarley.jungho.constants;
 
-public final class SessionAttributeNames {
+public enum SessionAttributeNames {
 
-    public static final String EXCHANGE_RATE = "exchangeRate";
-
+    EXCHANGE_RATE,
+    ;
 }

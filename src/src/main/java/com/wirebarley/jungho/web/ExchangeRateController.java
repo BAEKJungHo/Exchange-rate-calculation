@@ -1,5 +1,6 @@
 package com.wirebarley.jungho.web;
 
+import com.wirebarley.jungho.constants.SessionAttributeNames;
 import com.wirebarley.jungho.domain.Currency;
 import com.wirebarley.jungho.domain.ExchangeRate;
 import com.wirebarley.jungho.domain.ReceivingCountry;
@@ -32,10 +33,10 @@ public class ExchangeRateController {
     @GetMapping(value = "/form", produces = MediaType.TEXT_HTML_VALUE)
     public String form(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        ExchangeRate exchangeRate = (ExchangeRate) session.getAttribute(EXCHANGE_RATE);
+        ExchangeRate exchangeRate = (ExchangeRate) session.getAttribute(EXCHANGE_RATE.name());
         if(exchangeRate == null) {
             exchangeRate = exchangeRateFindService.findExchangeRate();
-            session.setAttribute(EXCHANGE_RATE, exchangeRate);
+            session.setAttribute(EXCHANGE_RATE.name(), exchangeRate);
         }
 
         model.addAttribute("krwExchangeRate", NumberFormatter.moneyFormat(exchangeRate.findRates(Currency.KRW.name())));
