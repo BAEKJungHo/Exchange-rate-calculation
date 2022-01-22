@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class ExchangeRateCalculatingValidator implements Validator {
+public class ReceivingMoneyValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
