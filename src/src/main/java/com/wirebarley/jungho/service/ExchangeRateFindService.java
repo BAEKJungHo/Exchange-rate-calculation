@@ -3,9 +3,13 @@ package com.wirebarley.jungho.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wirebarley.jungho.constants.Message;
+import com.wirebarley.jungho.domain.dto.ExchangeRateFindResponse;
+import com.wirebarley.jungho.domain.dto.ReceivingMoneyRequest;
+import com.wirebarley.jungho.domain.dto.ReceivingMoneyResponse;
 import com.wirebarley.jungho.exception.WirebarleyException;
 import com.wirebarley.jungho.domain.ExchangeRate;
 import com.wirebarley.jungho.util.DateUtils;
+import com.wirebarley.jungho.util.NumberFormatter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,7 +32,33 @@ public class ExchangeRateFindService {
     @Value("${currencyLayer.endPoint}")
     private String endPoint;
 
-    public ExChangeRate
+    /**
+     * 통화로 환율 조회
+     * @param currency 통화
+     * @return 통화에 대한 환율
+     */
+    public ExchangeRateFindResponse findExchangeRateByCurrency(String currency) {
+        ExchangeRate exchangeRate = findExchangeRate();
+        return ExchangeRateFindResponse.builder()
+                .exchangeRates(NumberFormatter.moneyFormat(exchangeRate.findRates(currency)))
+                .source(exchangeRate.getSource())
+                .currency(currency)
+                .build();
+    }
+
+    /**
+     * 수취 금액 조회
+     * @param dto ReceivingMoneyRequest
+     * @return 수취 금액
+     */
+    public ReceivingMoneyResponse findReceivingMoney(ReceivingMoneyRequest dto) {
+        ExchangeRate exchangeRate = findExchangeRate();
+        String receipts = NumberFormatter.moneyFormat(exchangeRate.findReceipts(dto.getCurrency(), dto.getRemittanceMoney()));
+        return ReceivingMoneyResponse.builder()
+                .receipts(receipts)
+                .currency(dto.getCurrency())
+                .build();
+    }
 
     /**
      * 환율 조회

@@ -1,12 +1,10 @@
 package com.wirebarley.jungho.web;
 
-import com.wirebarley.jungho.domain.ExchangeRate;
 import com.wirebarley.jungho.domain.dto.ExchangeRateFindResponse;
 import com.wirebarley.jungho.domain.dto.ReceivingMoneyRequest;
 import com.wirebarley.jungho.domain.dto.ReceivingMoneyResponse;
 import com.wirebarley.jungho.exception.ValidationException;
 import com.wirebarley.jungho.service.ExchangeRateFindService;
-import com.wirebarley.jungho.util.NumberFormatter;
 import com.wirebarley.jungho.web.validator.ExchangeRateCalculatingValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -32,13 +30,7 @@ public class ExchangeRateRestController {
 
     @GetMapping(value = "/{currency}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExchangeRateFindResponse> showExchangeRate(@PathVariable String currency) {
-        ExchangeRate exchangeRate = exchangeRateFindService.findExchangeRate();
-        ExchangeRateFindResponse response = ExchangeRateFindResponse.builder()
-                        .exchangeRates(NumberFormatter.moneyFormat(exchangeRate.findRates(currency)))
-                        .source(exchangeRate.getSource())
-                        .currency(currency)
-                        .build();
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(exchangeRateFindService.findExchangeRateByCurrency(currency));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,13 +41,6 @@ public class ExchangeRateRestController {
         if(bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
-        ExchangeRate exchangeRate = exchangeRateFindService.findExchangeRate();
-        String receipts = NumberFormatter.moneyFormat(exchangeRate.findReceipts(dto.getCurrency(), dto.getRemittanceMoney()));
-
-        ReceivingMoneyResponse response = ReceivingMoneyResponse.builder()
-                .receipts(receipts)
-                .currency(dto.getCurrency())
-                .build();
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(exchangeRateFindService.findReceivingMoney(dto));
     }
 }
