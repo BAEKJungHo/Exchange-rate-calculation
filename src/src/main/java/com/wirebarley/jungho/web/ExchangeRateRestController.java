@@ -5,7 +5,7 @@ import com.wirebarley.jungho.domain.dto.ReceivingMoneyRequest;
 import com.wirebarley.jungho.domain.dto.ReceivingMoneyResponse;
 import com.wirebarley.jungho.exception.ValidationException;
 import com.wirebarley.jungho.service.ExchangeRateFindService;
-import com.wirebarley.jungho.web.validator.ExchangeRateCalculatingValidator;
+import com.wirebarley.jungho.web.validator.ReceivingMoneyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +21,11 @@ import javax.validation.Valid;
 public class ExchangeRateRestController {
 
     private final ExchangeRateFindService exchangeRateFindService;
-    private final ExchangeRateCalculatingValidator exchangeRateCalculatingValidator;
+    private final ReceivingMoneyValidator receivingMoneyValidator;
 
     @InitBinder
     public void init(WebDataBinder dataBinder) {
-        dataBinder.addValidators(exchangeRateCalculatingValidator);
+        dataBinder.addValidators(receivingMoneyValidator);
     }
 
     @GetMapping(value = "/{currency}", produces = MediaType.APPLICATION_JSON_VALUE)

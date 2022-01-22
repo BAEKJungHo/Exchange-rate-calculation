@@ -25,11 +25,7 @@
                 let result = '수취금액은' + response.receipts + ' ' + response.currency + ' 입니다.';
                 document.getElementById("receivedAmountDiv").textContent=result;
             }).fail(function (error) {
-                if(typeof error.responseJSON.message != 'undefined') {
-                    alert(error.responseJSON.message);
-                } else {
-                    alert(error.responseJSON.errors[0].reason);
-                }
+                alert('송금액이 바르지 않습니다.');
             });
         }
     }
@@ -46,17 +42,13 @@
             let result = response.exchangeRates + " " + response.currency + "/" + response.source;
             document.getElementById("countryExchangeRate").textContent=result;
         }).fail(function (error) {
-            if(typeof error.responseJSON.message != 'undefined') {
-                alert(error.responseJSON.message);
-            } else {
-                alert(error.responseJSON.errors[0].reason);
-            }
+            alert('수취 국가가 올바르지 않습니다.');
         });
     }
 
     // 송금액에 대한 환율을 계산하기 위한 검증
     function validateToCalculating(remittanceMoney) {
-        if(isBlank(remittanceMoney)) {
+        if(isBlank(remittanceMoney) || isNaN(remittanceMoney)) {
             alert('송금액이 바르지 않습니다.');
             return false;
         }
