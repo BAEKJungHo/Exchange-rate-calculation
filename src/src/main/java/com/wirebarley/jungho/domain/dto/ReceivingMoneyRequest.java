@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ExchangeRateCalculatingRequest {
+public class ReceivingMoneyRequest {
 
     private String currency;
     private Integer remittanceMoney;

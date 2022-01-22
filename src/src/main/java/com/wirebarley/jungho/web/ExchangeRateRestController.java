@@ -1,9 +1,9 @@
 package com.wirebarley.jungho.web;
 
 import com.wirebarley.jungho.domain.ExchangeRate;
-import com.wirebarley.jungho.domain.dto.ExchangeRateCalculatingRequest;
-import com.wirebarley.jungho.domain.dto.ExchangeRateCalculatingResponse;
 import com.wirebarley.jungho.domain.dto.ExchangeRateFindResponse;
+import com.wirebarley.jungho.domain.dto.ReceivingMoneyRequest;
+import com.wirebarley.jungho.domain.dto.ReceivingMoneyResponse;
 import com.wirebarley.jungho.exception.ValidationException;
 import com.wirebarley.jungho.service.ExchangeRateFindService;
 import com.wirebarley.jungho.util.NumberFormatter;
@@ -42,8 +42,8 @@ public class ExchangeRateRestController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExchangeRateCalculatingResponse> showReceivingMoney(
-            @Valid ExchangeRateCalculatingRequest dto,
+    public ResponseEntity<ReceivingMoneyResponse> showReceivingMoney(
+            @Valid ReceivingMoneyRequest dto,
             BindingResult bindingResult
     ) {
         if(bindingResult.hasErrors()) {
@@ -52,7 +52,7 @@ public class ExchangeRateRestController {
         ExchangeRate exchangeRate = exchangeRateFindService.findExchangeRate();
         String receipts = NumberFormatter.moneyFormat(exchangeRate.findReceipts(dto.getCurrency(), dto.getRemittanceMoney()));
 
-        ExchangeRateCalculatingResponse response = ExchangeRateCalculatingResponse.builder()
+        ReceivingMoneyResponse response = ReceivingMoneyResponse.builder()
                 .receipts(receipts)
                 .currency(dto.getCurrency())
                 .build();

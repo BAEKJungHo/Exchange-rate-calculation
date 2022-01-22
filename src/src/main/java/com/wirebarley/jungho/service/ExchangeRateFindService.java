@@ -28,6 +28,8 @@ public class ExchangeRateFindService {
     @Value("${currencyLayer.endPoint}")
     private String endPoint;
 
+    public ExChangeRate
+
     /**
      * 환율 조회
      * @return 환율(ExchangeRate)

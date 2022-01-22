@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ExchangeRateCalculatingResponse {
+public class ReceivingMoneyResponse {
 
     private String receipts;
     private String currency;
