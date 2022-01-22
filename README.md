@@ -19,11 +19,11 @@
 ## Resource Naming
 
 - GET `/exchangeRates/form`, produces = MediaType.TEXT_HTML_VALUE
-    - 환율 계산 및 송금을 위한 폼
+    - 환율 계산 폼을 보여줌
 - GET `/exchangeRates/{currency}` , produces = MediaType.APPLICATION_JSON_VALUE
-    - 셀렉트 박스로 통화 선택 시(Ex. KRW) 환율을 조회하기 위함
-- POST `/exchangesRates`, produces = MediaType.APPLICATION_JSON_VALUE
-    - 환율 계산
+    - 통화에 대한 환율을 보여줌
+- GET `/exchangesRates`, produces = MediaType.APPLICATION_JSON_VALUE
+    - 수취 금액 결과를 보여줌
 
 ## Error Response Format
 
