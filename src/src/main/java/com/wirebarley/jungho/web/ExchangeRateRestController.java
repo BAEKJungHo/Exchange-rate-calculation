@@ -31,7 +31,7 @@ public class ExchangeRateRestController {
     }
 
     @GetMapping(value = "/{currency}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExchangeRateFindResponse> findExchangeRateByCurrency(@PathVariable String currency) {
+    public ResponseEntity<ExchangeRateFindResponse> showExchangeRate(@PathVariable String currency) {
         ExchangeRate exchangeRate = exchangeRateFindService.findExchangeRate();
         ExchangeRateFindResponse response = ExchangeRateFindResponse.builder()
                         .exchangeRates(NumberFormatter.moneyFormat(exchangeRate.findRates(currency)))
@@ -41,20 +41,20 @@ public class ExchangeRateRestController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExchangeRateCalculatingResponse> calculate(
-            @Valid @RequestBody ExchangeRateCalculatingRequest dto,
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ExchangeRateCalculatingResponse> showReceivingMoney(
+            @Valid ExchangeRateCalculatingRequest dto,
             BindingResult bindingResult
     ) {
         if(bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
         ExchangeRate exchangeRate = exchangeRateFindService.findExchangeRate();
-        String receipts = NumberFormatter.moneyFormat(exchangeRate.findReceipts(dto.getReceivingCountry(), dto.getRemittanceMoney()));
+        String receipts = NumberFormatter.moneyFormat(exchangeRate.findReceipts(dto.getCurrency(), dto.getRemittanceMoney()));
 
         ExchangeRateCalculatingResponse response = ExchangeRateCalculatingResponse.builder()
                 .receipts(receipts)
-                .currency(dto.getReceivingCountry())
+                .currency(dto.getCurrency())
                 .build();
         return ResponseEntity.ok().body(response);
     }

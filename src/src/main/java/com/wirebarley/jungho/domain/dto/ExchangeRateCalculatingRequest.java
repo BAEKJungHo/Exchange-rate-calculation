@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter @Setter
 public class ExchangeRateCalculatingRequest {
 
-    private String receivingCountry;
+    private String currency;
     private Integer remittanceMoney;
 }

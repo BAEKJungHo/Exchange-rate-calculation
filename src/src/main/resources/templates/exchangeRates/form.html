@@ -7,20 +7,19 @@
 <script th:inline="javascript">
     // 수취 금액 계산
     function calculate() {
-        let receivingCountry = $('#receivingCountry option:selected').val();
+        let currency = $('#receivingCountry option:selected').val();
         let remittanceMoney = $('#remittanceMoney').val();
 
         let data = {
-            "receivingCountry" : receivingCountry,
+            "currency" : currency,
             "remittanceMoney" : remittanceMoney,
         }
 
         if(validateToCalculating(remittanceMoney)) {
             $.ajax({
-                type: "POST",
-                url: `/exchangeRates/`,
-                headers: {'Content-Type': 'application/json'},
-                data: JSON.stringify(data),
+                type: "GET",
+                url: `/exchangeRates`,
+                data: { currency : currency, remittanceMoney : remittanceMoney },
                 dataType: "json"
             }).done(function (response) {
                 let result = '수취금액은' + response.receipts + ' ' + response.currency + ' 입니다.';
@@ -37,12 +36,11 @@
 
     // 통화에 해당하는 환율 조회
     function findExchangeRateByCurrency() {
-        let receivingCountry = $('#receivingCountry option:selected').val();
+        let currency = $('#receivingCountry option:selected').val();
 
         $.ajax({
             type: "GET",
-            url: `/exchangeRates/`+receivingCountry,
-            headers: {'Content-Type': 'application/json'},
+            url: `/exchangeRates/`+currency,
             dataType: "json"
         }).done(function (response) {
             let result = response.exchangeRates + " " + response.currency + "/" + response.source;
